@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <title>تحميل ايموجي الديسكورد</title>
+
+    <meta name="author" content="Tiemen" />
+    <meta name="description" content="احصل على جميع الإيموجي من السيرفر في ملف ZIP" />
+    <meta name="keywords" content="discord, emoji, emojis, discordapp, discord app, emoji downloader, download emoji, ديسكورد, ايموجي, تحميل ايموجي" />
+    <meta name="theme-color" content="#7289DA" />
+
+    <meta property="og:title" content="تحميل ايموجي الديسكورد" />
+    <meta property="og:description" content="احصل على جميع الإيموجي من السيرفر في ملف ZIP" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://thatiemsz.github.io/Discord-Emoji-Downloader/" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="./assets/app.css" />
+    <link rel="manifest" href="./manifest.json" />
+</head>
+
+<body>
+    <div class="ui inverted raised very padded text container segment">
+        <h1 class="ui header">تحميل ايموجي الديسكورد 🎨</h1>
+
+        <div class="ui inverted secondary pointing menu">
+            <a class="item active" data-tab="default">تلقائي</a>
+            <a class="item" data-tab="manual">يدوي</a>
+        </div>
+
+        <div class="ui inverted tab segment active" id="default-1" data-tab="default">
+            <div class="ui warning message">
+                <div class="header">
+                    ⚠️ تحذير: كن حذراً، مشاركة التوكن الخاص بك يمكن أن يكون خطيراً!
+                </div>
+                هذه الصفحة لا تستخدم التوكن الخاص بك بأي طريقة ضارة وتستخدمه فقط للمصادقة مع ديسكورد، وجلب قائمة السيرفرات والإيموجي الخاصة بها.<br />
+                (<a href="https://github.com/ThaTiemsz/Discord-Emoji-Downloader" target="_blank">يمكن العثور على الكود المصدري هنا</a>)
+            </div>
+            <form class="ui inverted form">
+                <div class="field">
+                    <label>التوكن الخاص بك <span class="link" onclick="javascript:helpModal();">(?)</span></label>
+                    <input type="password" name="token" id="token" placeholder="mfa.ABcd1e2Fgh3i-jKlmnoPQRstu4VWx4yz5A6b7cDEFGhiJk8LmNOPqR_sSTUV9XyzabcdeF0Xd" autocomplete="new-password" />
+                </div>
+                <button name="continue" id="continue" class="ui button">متابعة</button>
+            </form>
+        </div>
+
+        <div class="ui inverted tab segment" id="default-2" data-tab="default-hide">
+            <form class="ui inverted form">
+                <div class="field">
+                    <label>السيرفر</label>
+                    <div class="ui fluid search selection dropdown" id="server-select">
+                        <input type="hidden" name="server" />
+                        <i class="dropdown icon"></i>
+                        <div class="default text">اختر السيرفر</div>
+                    </div>
+                </div>
+                <div class="field" id="emojis">
+                    <label>اختر الإيموجي <span id="emojicount"></span></label>
+                    <div class="ui fluid multiple search selection dropdown" id="emoji-select">
+                        <input type="hidden" name="emojis" />
+                        <i class="dropdown icon"></i>
+                        <div class="default text">اختر الإيموجي</div>
+                    </div>
+                </div>
+                <div class="field" id="emojis2">
+                    <label>اختر الإيموجي <span id="emojicount2"></span></label>
+                    <div class="ui fluid multiple search selection dropdown" id="emoji-select2">
+                        <input type="hidden" name="emojis2" />
+                        <i class="dropdown icon"></i>
+                        <div class="default text">اختر الإيموجي</div>
+                    </div>
+                </div>
+                <div class="field" id="stickers">
+                    <label>اختر الملصقات <span id="stickercount"></span></label>
+                    <div class="ui fluid multiple search selection dropdown" id="sticker-select">
+                        <input type="hidden" name="stickers" />
+                        <i class="dropdown icon"></i>
+                        <div class="default text">اختر الملصقات</div>
+                    </div>
+                </div>
+                <div class="field">
+                    <button name="submit" id="submit" class="ui primary button">إرسال</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="ui inverted tab segment" id="manual" data-tab="manual">
+            <p>قم بعمل طلب GET إلى <code>https://discord.com/api/v10/guilds/:id</code>، مع استبدال <code>:id</code> بمعرف السيرفر، وتأكد أيضاً من أنك مصرح باستخدام التوكن الخاص بك. ثم انسخ والصق بيانات JSON في مربع النص أدناه <i>(تم وضع مثال فيه)</i>.</p>
+            <p>
+                <div class="ui inverted form">
+                    <div class="field">
+                        <label>كائن السيرفر (Guild Object)</label>
+                        <div id="editor" style="height: 350px; width: 100%;"></div>
+                    </div>
+                    <div class="field">
+                        <button name="submit" id="submit" class="ui primary button">إرسال</button>
+                    </div>
+                </div>
+            </p>
+        </div>
+
+        <div id="messages">
+            <div class="ui icon message" id="loading">
+                <i class="notched circle loading icon"></i>
+                <div class="content">
+                    <div class="header" id="loading-header">
+                    انتظر لحظة
+                    </div>
+                    <p id="loading-msg">جاري جمع الإيموجي والملصقات من أجلك...</p>
+                </div>
+            </div>
+
+            <div class="ui icon success message" id="success">
+                <i class="smile icon"></i>
+                <div class="content">
+                    <div class="header" id="success-header">
+                    وجدناهم! 🎉
+                    </div>
+                    <p id="success-msg">تم العثور على <strong id="emoji-count">NaN</strong> إيموجي و <strong id="sticker-count">NaN</strong> ملصق تم حزمهم في ملف ZIP أعلاه.</p>
+                </div>
+            </div>
+
+            <div class="ui icon error message" id="error">
+                <i class="warning circle icon"></i>
+                <div class="content">
+                    <div class="header" id="error-header">
+                        حدث خطأ ⚠️
+                    </div>
+                    <p id="error-msg"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui basic modal">
+            <div class="ui icon header">
+                كيفية الحصول على التوكن الخاص بك
+            </div>
+            <div class="content">
+                <p>
+                    <ul>
+                        <li>افتح تطبيق ديسكورد على سطح المكتب أو سجل الدخول على موقع ديسكورد <a href="https://discord.com/app" target="_blank">من هنا</a></li>
+                        <li>افتح أدوات المطور في كروم باستخدام اختصار لوحة المفاتيح <pre>F12</pre> أو <pre>Ctrl + Shift + I</pre></li>
+                        <li>لتمكين القدرة على اللصق في وحدة التحكم، قد تحتاج إلى كتابة "<code style="user-select: all;">allow pasting</code>"</li>
+                        <li>
+                            الصق ونفذ الكود التالي:
+                            <p>
+                                <code style="user-select: all;">{webpackChunkdiscord_app.push([[Math.random()],{},e=>{e.b&&(m=Object.values(e.c))}]);let e=m.find((e=>!e?.exports?.messagesLoader&&e?.exports?.default?.getToken))?.exports?.default?.getToken?.();e?console.log(`"${e}"`):console.warn("Token not found.")}</code>
+                            </p>
+                        </li>
+                        <li>سيتم إرجاع التوكن الخاص بك في أسفل وحدة التحكم. انسخ المحتويات بين علامتي التنصيص "". هذا هو التوكن الخاص بك.</li>
+                    </ul>
+                </p>
+            </div>
+            <div class="actions">
+                <div class="ui green ok inverted button">
+                    <i class="checkmark icon"></i>
+                    فهمت
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.36.2/ace.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.36.2/mode-json.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script type="module" src="./assets/app.js"></script>
+    <script>
+        const helpModal = () => {
+            $('.ui.basic.modal').modal('show')
+        }
+    </script>
+</body>
+</html>
